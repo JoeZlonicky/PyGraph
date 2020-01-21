@@ -3,17 +3,22 @@ from graph import Graph
 
 
 class InputBox:
-    size = (Graph.screen_size[0], 100)
-    border_width = 2
+    """ Handles input from user and displays it as text """
+    SIZE = (Graph.SIZE[0], 100)
+    FONT_SIZE = 32
+    BORDER_WIDTH = 2 
+    BORDER_COLOR = (89, 193, 53)
+    BACKGROUND_COLOR = (36, 34, 52)
 
     def __init__(self):
-        self.font = pygame.font.SysFont("Consolas", 32)
-        self.input = ""
-        self.background = pygame.Surface(self.size)
-        pygame.draw.rect(self.background, (255, 255, 255), self.background.get_rect(), self.border_width)
-        self.image = self.background.copy()
+        """ Create an input box """
+        self.font = pygame.font.SysFont("Arial", 32)
+        self.input = "x"
+        self.image = pygame.Surface(self.SIZE)
+        self.update_image()
 
     def handle_events(self, events):
+        """ Handle keyboard input """
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
@@ -24,7 +29,10 @@ class InputBox:
                     self.update_image()
 
     def update_image(self):
-        self.image = self.background.copy()
+        """ Render text """
+        self.image.fill(self.BACKGROUND_COLOR)
+        pygame.draw.line(self.image, self.BORDER_COLOR, (0, 0), (self.SIZE[0],0),
+                self.BORDER_WIDTH)
         label = self.font.render(self.input, True, (255, 255, 255))
-        label_rect = label.get_rect(centerx=self.size[0] // 2, centery=self.size[1] // 2)
+        label_rect = label.get_rect(centerx=self.SIZE[0] // 2, centery=self.SIZE[1] // 2)
         self.image.blit(label, label_rect)
